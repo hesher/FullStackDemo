@@ -1,0 +1,27 @@
+.Todos_Todo_label {
+  font-size: 22px;
+  display: block;
+  flex-grow: 1;
+}
+
+.Todos_Todo_container {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  justify-content: stretch;
+}
+
+.Todos_Todo_completed .Todos_Todo_label {
+  text-decoration: line-through;
+  color: gray;
+}
+
+.Todos_Todo_not_completed .Todos_Todo_label {
+  text-decoration: none;
+  color: white;
+  background-color: darkblue;
+}
+
+.Todos_Todo_button {
+  border-radius: 50%;
+}

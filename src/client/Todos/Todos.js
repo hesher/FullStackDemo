@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import './Todos.css';
 import Todo from '../Todo/Todo';
 
@@ -35,7 +35,7 @@ function useTodos() {
       fetch('/api/todos')
         .then(async todosResponse => {
           if (todosResponse.ok) {
-            const {todos} = await todosResponse.json();
+            const { todos } = await todosResponse.json();
             setTodosState(todos);
           } else {
             throw Error(`${todosResponse.status}: ${todosResponse.statusText}`);
@@ -73,10 +73,28 @@ export default function App() {
             onDelete={() => {
               setTodos([...todos.slice(0, index), ...todos.slice(index + 1)]);
             }}
+            onDown={() => {
+              setTodos([
+                ...todos.slice(0, index), 
+                todos[index + 1], 
+                todos[index], 
+                ...todos.slice(index + 2)
+              ]);
+            }}
+            isDownDisabled={index === todos.length - 1}
+            onUp={() => {
+              setTodos([
+                ...todos.slice(0, index-1), 
+                todos[index], 
+                todos[index-1], 
+                ...todos.slice(Math.min(index+1, todos.length))
+              ]);
+            }}
+            isUpDisabled={index === 0}
             onComplete={() => {
               setTodos([
                 ...todos.slice(0, index),
-                {...todo, complete: !todo.complete},
+                { ...todo, complete: !todo.complete },
                 ...todos.slice(index + 1)
               ]);
             }}
@@ -89,7 +107,7 @@ export default function App() {
           className="Todos_add_input"
           onKeyDown={e => {
             if (e.keyCode === 13) {
-              setTodos([...todos, {label: newLabel}]);
+              setTodos([...todos, { label: newLabel }]);
               setNewLabel('');
             }
           }}
@@ -98,7 +116,7 @@ export default function App() {
           type="button"
           disabled={newLabel === null}
           className="Todos_add_button"
-          onClick={() => setTodos([...todos, {label: newLabel}])}>
+          onClick={() => setTodos([...todos, { label: newLabel }])}>
           Add
         </button>
       </div>

@@ -1,11 +1,10 @@
 .Todos_container {
   display: flex;
-  border: 1px solid blue;
+
   flex-direction: column;
   max-width: 300px;
-  padding: 20px;
+
   border-radius: 10px;
-  background-color: aliceblue;
 }
 
 .Todos_add_input {

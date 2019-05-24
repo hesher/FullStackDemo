@@ -16,30 +16,22 @@ export default function Todo({
       className={`Todos_Todo_container ${
         complete ? 'Todos_Todo_completed' : 'Todos_Todo_not_completed'
         }`}>
-      <button type="button" onClick={onComplete} className="Todos_Action_button">
-        V
-      </button>
+      <TodoButton onClick={onComplete}>V</TodoButton>
       <label className="Todos_Todo_label">
         {label}
       </label>
-      <button className="Todos_Action_button" type="button" onClick={onDelete}>
-        X
-      </button>
-      <button
-        className="Todos_Action_button" type="button" onClick={onDown}
-        disabled={isDownDisabled}
-        
-        >
-        ⬇️
-      </button>
-      <button className="Todos_Action_button" type="button" onClick={onUp}
-        disabled={isUpDisabled}
-      >
-        ⬆️
-      </button>
+      <TodoButton onClick={onDelete}>X</TodoButton>
+      <TodoButton onClick={onUp} disabled={isUpDisabled}>⬆</TodoButton>
+      <TodoButton onClick={onDown} disabled={isDownDisabled}>⬇</TodoButton>
     </span>
   );
 }
+
+const TodoButton = ({ children, onClick, disabled=false }) => (<button className="Todos_Action_button" type="button" onClick={onClick}
+  disabled={disabled}
+>
+  {children}
+</button>);
 
 Todo.propTypes = {
   todo: PropTypes.exact({

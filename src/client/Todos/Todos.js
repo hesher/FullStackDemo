@@ -1,62 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import './Todos.css';
+import React, { useState } from 'react';
 import Todo from '../Todo/Todo';
-
-function updateTodos(todos, onUpdate, onError) {
-  if (todos === undefined || todos === null) {
-    throw Error('Did not expect an empty todos update');
-  }
-  onUpdate(todos);
-  fetch(`/api/todos`, {
-    method: 'POST',
-    body: JSON.stringify(todos),
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json'
-    }
-  })
-    .then(response => {
-      if (!response.ok) {
-        throw Error(`${response.status}: ${response.statusText}`);
-      }
-    })
-    .catch(error => {
-      console.error('Error occured in updating todos json', error);
-      onError(error);
-    });
-}
-
-function useTodos() {
-  const [todosState, setTodosState] = useState(null);
-  const [errorState, setErrorState] = useState(null);
-
-  useEffect(() => {
-    if (todosState === null && errorState === null) {
-      fetch('/api/todos')
-        .then(async todosResponse => {
-          if (todosResponse.ok) {
-            const { todos } = await todosResponse.json();
-            setTodosState(todos);
-          } else {
-            throw Error(`${todosResponse.status}: ${todosResponse.statusText}`);
-          }
-        })
-        .catch(error => {
-          console.error('Error occured in getting todos json', error);
-          setErrorState(error);
-        });
-    }
-  });
-
-  return [
-    todosState,
-    errorState,
-    todos => updateTodos(todos, setTodosState, setErrorState)
-  ];
-}
+import './Todos.css';
+import useTodos from './useTodos';
 
 export default function App() {
-  const [todos = [], error, setTodos] = useTodos();
+  const {todos = [], error, setTodos} = useTodos();
   const [newLabel, setNewLabel] = useState('');
 
   if (error !== null) {
@@ -75,19 +23,19 @@ export default function App() {
             }}
             onDown={() => {
               setTodos([
-                ...todos.slice(0, index), 
-                todos[index + 1], 
-                todos[index], 
+                ...todos.slice(0, index),
+                todos[index + 1],
+                todos[index],
                 ...todos.slice(index + 2)
               ]);
             }}
             isDownDisabled={index === todos.length - 1}
             onUp={() => {
               setTodos([
-                ...todos.slice(0, index-1), 
-                todos[index], 
-                todos[index-1], 
-                ...todos.slice(Math.min(index+1, todos.length))
+                ...todos.slice(0, index - 1),
+                todos[index],
+                todos[index - 1],
+                ...todos.slice(Math.min(index + 1, todos.length))
               ]);
             }}
             isUpDisabled={index === 0}

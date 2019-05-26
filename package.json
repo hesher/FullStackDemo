@@ -19,6 +19,9 @@
     "react": "^16.8.0-alpha.1",
     "react-dom": "^16.8.0-alpha.1"
   },
+  "prettier": {
+    "printWidth": 80
+  },
   "resolutions": {
     "terser": "3.14.1"
   },

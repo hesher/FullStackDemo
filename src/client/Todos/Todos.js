@@ -3,7 +3,7 @@ import AddTodos from "./AddTodos";
 import Todo from "../Todo/Todo";
 import "./Todos.css";
 
-export default function Todos() {\
+export default function Todos() {
   // Remove the code here
   const [todos, setTodos] = useState([
     { label: "Go to Todos.js" },

@@ -1,23 +1,30 @@
+![Screenshot](TodoScreenshot.png)
+
 # Server/Client Workshop
 
 This workshop will take you through adding feature to a fullstack, react ToDo app.
 Next, you will learn how to read and write changes to the hard drive.
 
-## Installation
+## Steps
+### Fork it
+Start by forking this repository into your own account. 
+Then continue with the instructions there.
+
+### Installation
 
 ```
-git clone git@github.com:hesher/FullstackWorkshop.git
+git clone git@github.com:{your_profile_name}/FullstackWorkshop.git
 cd FullstackWorkshop
 yarn
 ```
 
-## Running
+### Running
+```
+`yarn dev`: Start express server + static client server. Allow hot reloading
+`yarn start`: bundle client into bundle.js and server from express server
+```
+- Run `yarn dev`
 
-- `yarn dev`: Start express server + static client server. Allow hot reloading
-- `yarn start`: bundle client into bundle.js and server from express server
-  ![Screenshot](TodoScreenshot.png)
-
-## Steps
 ### Read and Write Todos from disk (when you refresh, todos state should be preserved)
 
 Currently, the state of Todos is reset every time you refresh the browser. The reason for that is that the state is stored in memory.

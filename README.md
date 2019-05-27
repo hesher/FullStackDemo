@@ -25,7 +25,7 @@ yarn
 ```
 - Run `yarn dev`
 
-### Read and Write Todos from disk (when you refresh, todos state should be preserved)
+### Read and Write Todos from disk
 
 Currently, the state of Todos is reset every time you refresh the browser. The reason for that is that the state is stored in memory.
 

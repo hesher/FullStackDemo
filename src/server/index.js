@@ -34,8 +34,8 @@ app.get("/api/todos", (req, res, next) => {
   // And delete the code below
   return res.send({
     todos: [
-      { label: "Go to index.js" },
-      { label: "find the callback under app.get" },
+      { label: "Go to server/index.js" },
+      { label: "find the callback passed to app.get" },
       { label: "delete the return statemement" },
       { label: "uncomment the first part" },
       { label: "profit" }

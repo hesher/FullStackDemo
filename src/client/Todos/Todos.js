@@ -1,20 +1,16 @@
 import React, { useState } from "react";
 import AddTodos from "./AddTodos";
 import Todo from "../Todo/Todo";
-import useTodos from "./useTodos";
 import "./Todos.css";
 
 export default function Todos() {
-  // const [todos, setTodos] = useState([
-  //   { label: "1" },
-  //   { label: "2" },
-  //   { label: "3" },
-  //   { label: "4" },
-  //   { label: "5" },
-  //   { label: "6" }
-  // ]);
-
-  const [todos, setTodos] = useTodos();
+  const [todos, setTodos] = useState([
+    { label: "Go to Todos.js" },
+    { label: "Remove the useState code" },
+    { label: "Replace it with useTodos" },
+    { label: "Import useTodos from './useTodos'" },
+    { label: "Refresh the browser" }
+  ]);
 
   if (todos !== null) {
     return (

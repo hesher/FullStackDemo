@@ -4,7 +4,9 @@ import Todo from "../Todo/Todo";
 import "./Todos.css";
 
 export default function Todos() {
-  // Remove the code here
+  // Replace useState with useTodos
+  // remove parameter (useTodos doesn't take a parameter)
+  // import useTodos from './useTodos'
   const [todos, setTodos] = useState([
     { label: "Go to Todos.js" },
     { label: "Remove the useState code" },
@@ -13,7 +15,7 @@ export default function Todos() {
     { label: "Refresh the browser" }
   ]);
 
-  // Import useTodos and use it here instead
+
 
   if (todos !== null) {
     return (

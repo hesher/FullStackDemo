@@ -4,7 +4,7 @@ const fs = require('fs');
 // const cors = require('cors');
 const multer = require('multer');
 const storage = multer.memoryStorage();
-const upload = multer({storage, fileSize: 10000});
+const upload = multer({storage, fileSize: 1000});
 
 const app = express();
 // const gpxParse = require('gpx-parse');

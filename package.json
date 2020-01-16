@@ -8,14 +8,17 @@
     "start": "npm run build && node src/server/index.js",
     "client": "webpack-dev-server --mode development --devtool inline-source-map --hot",
     "server": "nodemon src/server/index.js",
-    "dev": "concurrently \"npm run server\" \"npm run client\""
+    "dev": "lsof -ti:3000 | xargs kill;  lsof -ti:8080 | xargs kill; concurrently \"npm run server\" \"npm run client\""
   },
   "author": "Ben",
   "dependencies": {
+    "@nivo/line": "^0.61.1",
     "babel-polyfill": "^6.26.0",
     "body-parser": "^1.18.3",
+    "cors": "^2.8.5",
     "express": "^4.16.3",
     "fit-file-parser": "^1.6.17",
+    "multer": "^1.4.2",
     "prop-types": "^15.6.2",
     "react": "^16.8.0-alpha.1",
     "react-dom": "^16.8.0-alpha.1"

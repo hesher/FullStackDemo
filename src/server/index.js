@@ -1,51 +1,18 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const fs = require('fs');
-const {promisify} = require('util');
+// const cors = require('cors');
+const multer = require('multer');
+const storage = multer.memoryStorage();
+const upload = multer({storage, fileSize: 10000});
 
 const app = express();
-const FILE_PATH = './todos.json';
-const gpxParse = require('gpx-parse');
+// const gpxParse = require('gpx-parse');
 const FitParser = require('fit-file-parser').default;
 
-const readTodosFile = () => {
-  return promisify(fs.readFile)(FILE_PATH);
-};
+let savedFile = null;
 
-const writeTodosFile = todos => {
-  return new Promise((resolve, reject) => {
-    fs.writeFile(FILE_PATH, JSON.stringify({todos}), err => {
-      if (err) {
-        reject(err);
-      }
-    });
-    resolve();
-  });
-};
-
-app.use(express.static('dist'));
-
-app.use(bodyParser.json());
-
-const path = './test2.gpx';
-app.get('/api/gpx', (req, res, next) => {
-  if (!fs.existsSync(path)) {
-    next(`The file ${path} doesn't exist`);
-  }
-
-  gpxParse.parseGpxFromFile(path, (error, data) => {
-    if (error) {
-      next(`error: ${error}`);
-    } else {
-      res.send(`success, tracks number=${data.tracks.length}`);
-    }
-  });
-});
-app.get('/api/fit', async (req, res, next) => {
-  const fitPath = './test.fit';
-  if (!fs.existsSync(fitPath)) {
-    next(`The file ${fitPath} doesn't exist`);
-  }
+function fitParse(content, next, req, res) {
   const fitParser = new FitParser({
     force: true,
     speedUnit: 'km/h',
@@ -55,18 +22,75 @@ app.get('/api/fit', async (req, res, next) => {
     mode: 'cascade'
   });
 
-  return fs.readFile(fitPath, (err, content) => {
-    return fitParser.parse(content, (error, data) => {
-      // Handle result of parse method
-      if (error) {
-        console.log('111111');
-        next(error);
-      } else {
-        console.log('2222');
-        res.send(JSON.stringify(data, null, 2));
-      }
-    });
+  return fitParser.parse(content, (error, data) => {
+    // Handle result of parse method
+    if (error) {
+      next(error);
+    } else {
+      // res.send(
+      //   `${JSON.stringify(
+      //     data.activity.sessions[0].laps[0].records,
+      //     null,
+      //     2
+      //   )}`
+      // );
+
+      const {records} = data.activity.sessions[0].laps[0];
+
+      const heartBeats = records.map(record => ({
+        y: record.heart_rate,
+        x: record.timer_time
+      }));
+      const chartData = [
+        {
+          id: 'heart_rate',
+          data: heartBeats
+        }
+      ];
+      res.send(JSON.stringify(chartData, null, 2));
+    }
   });
+}
+
+app.use(express.static('dist'));
+
+app.use(bodyParser.json());
+// app.use(cors);
+
+const path = './test2.gpx';
+// app.get('/api/gpx', (req, res, next) => {
+//   if (!fs.existsSync(path)) {
+//     next(`The file ${path} doesn't exist`);
+//   }
+
+//   gpxParse.parseGpxFromFile(path, (error, data) => {
+//     if (error) {
+//       next(`error: ${error}`);
+//     } else {
+//       res.send(`success, tracks number=${data.tracks.length}`);
+//     }
+//   });
+// });
+app.get('/api/fit', async (req, res, next) => {
+  const fitPath = './test.fit';
+  if (!fs.existsSync(fitPath)) {
+    next(`The file ${fitPath} doesn't exist`);
+  }
+  if (savedFile != null) {
+    return fitParse(savedFile.buffer, next, req, res);
+  }
+  return fs.readFile(fitPath, (err, content) => {
+    return fitParse(content, next, req, res);
+  });
+});
+
+app.post('/api/upload', upload.single('file'), async (req, res, next) => {
+  if (req.file !== undefined) {
+    savedFile = req.file;
+    res.end();
+  } else {
+    next('Body was empty');
+  }
 });
 
 // app.post('/api/todos', async (req, res, next) => {
